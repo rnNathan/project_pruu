@@ -38,4 +38,5 @@ public class Pombo {
     @OneToMany(mappedBy = "idUsuario")
     private Set<Pruu> mensagens;
 
+
 }

@@ -27,16 +27,16 @@ public class Pruu {
     @JoinColumn(name = "id_usuario")
     private Pombo idUsuario;
 
+    @NotNull
     @NotBlank
     @Size(min = 1, max = 300)
     private String mensagem;
 
     @CreationTimestamp
-    @NotNull
     private LocalDate dataCriada;
 
-    @OneToMany(mappedBy = "mensagens")
-    private Set<Pombo> curtidas;
+    //@ManyToMany(mappedBy = "mensagens")
+    //private Set<Pombo> curtidas;
 
 
 
