@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 
@@ -35,8 +36,10 @@ public class Pruu {
     @CreationTimestamp
     private LocalDate dataCriada;
 
-    //@ManyToMany(mappedBy = "mensagens")
-    //private Set<Pombo> curtidas;
+    @ElementCollection
+    @CollectionTable(name = "curtidas", joinColumns = @JoinColumn(name = "pombo_id"))
+    @Column(name = "curtidas")
+    private List<String> curtidas;
 
 
 
