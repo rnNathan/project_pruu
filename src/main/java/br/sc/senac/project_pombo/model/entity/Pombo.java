@@ -1,11 +1,13 @@
 package br.sc.senac.project_pombo.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.util.List;
 import java.util.Set;
 
 @Table(name = "TB_USUARIO")
@@ -33,10 +35,18 @@ public class Pombo {
     private String cpf;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private PerfilAcesso perfilAcesso;
 
-    @OneToMany(mappedBy = "idUsuario")
+    @JsonBackReference
+    @OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL)
     private Set<Pruu> mensagens;
+
+    @ManyToMany
+    @JoinTable(name = "tb_milho",
+            joinColumns = @JoinColumn(name = "pombo_id"),
+            inverseJoinColumns = @JoinColumn(name = "pruu_id"))
+    private List<Pruu> listaDeMilhos;
 
 
 }

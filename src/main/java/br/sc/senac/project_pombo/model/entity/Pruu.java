@@ -36,16 +36,7 @@ public class Pruu {
     @CreationTimestamp
     private LocalDate dataCriada;
 
-    @ElementCollection
-    @CollectionTable(name = "curtidas", joinColumns = @JoinColumn(name = "pombo_id"))
-    @Column(name = "curtidas")
-    private List<String> curtidas;
-
-
-
-
-
-
-
+    @ManyToMany(mappedBy = "listaDeMilhos")
+    private Set<Pombo> milhos;
 
 }
