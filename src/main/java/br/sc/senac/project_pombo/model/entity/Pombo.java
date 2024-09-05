@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.util.List;
 import java.util.Set;
 
-@Table(name = "TB_USUARIO")
+@Table(name = "TB_POMBO")
 @Entity
 @Data
 public class Pombo {
@@ -39,8 +39,9 @@ public class Pombo {
     private PerfilAcesso perfilAcesso;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pombo", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Pruu> mensagens;
+
 
     @ManyToMany
     @JoinTable(name = "tb_milho",

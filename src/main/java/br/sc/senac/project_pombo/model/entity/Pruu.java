@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 
-@Table (name = "TB_MENSAGEM")
+@Table (name = "TB_PRUU")
 @Entity
 @Data
 public class Pruu {
@@ -25,11 +25,11 @@ public class Pruu {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Pombo idUsuario;
+    @JoinColumn(name = "id_pombo")
+    private Pombo pombo;
 
     @NotNull
-    @NotBlank
+    @NotBlank(message = "Não pode ultrapassar o limite de 300 caracteres.")
     @Size(min = 1, max = 300)
     private String mensagem;
 
@@ -38,5 +38,7 @@ public class Pruu {
 
     @ManyToMany(mappedBy = "listaDeMilhos")
     private Set<Pombo> milhos;
+
+    private Integer totalDeMilhos;
 
 }
