@@ -62,33 +62,27 @@ public class PruuService {
 //        return null;
 //    }
 
-    public Optional<Pruu> likeOrDislike(String idPruu, String idUsuario) throws PomboException {
+    public Optional<Pruu> likeOuDisLike(String idPruu, String idUsuario) throws PomboException {
         //Pegar o Pruu pelo id dele.
         Optional<Pruu> pruuMensagem = pruuRepository.findById(idPruu);
 
         Pruu pruu;
         Pombo pombo = null;
-        //isPresent vê se encontrou algum valor, se encontrar irei poder mexer,
-        //Caso ao contrário, ele envia uma mensagem de não encontrada.
 
-        if (pruuMensagem.isPresent()) {
+        if (pruuMensagem.isPresent()) {  //isPresent vê se encontrou algum valor, se encontrar irei poder mexer,caso ao contrário, ele envia uma mensagem de não encontrada.
             pruu = pruuMensagem.get();
             Set<Pombo> pombosQueCurtiram = pruu.getMilhos();
 
-            //Caso o pombo deu deslike, ele vai retirar da lista.
-            if (pombosQueCurtiram.contains(idUsuario)) {
+            if (pombosQueCurtiram.contains(idUsuario)) {  //Caso o pombo deu deslike, ele vai retirar da lista.
                 pombosQueCurtiram.remove(idUsuario);
                 pruu.setTotalDeMilhos(pruu.getTotalDeMilhos() - 1);
             } else {
-                //Caso contrário, de like
-                PomboRepository pomboRepo = pomboRepository;
-                pomboRepo.findById(idUsuario);
-
                 pombosQueCurtiram.add(pombo);
+                pruu.setMilhos(pombosQueCurtiram);
                 pruu.setTotalDeMilhos(pruu.getTotalDeMilhos() + 1);
             }
             //Atualizar os pruu
-            pruu.setMilhos(pombosQueCurtiram);
+
             pruuRepository.save(pruu);
         } else {
             throw new PomboException("Mensagem não encontrada!");

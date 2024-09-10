@@ -59,7 +59,7 @@ public class PruuController {
 
     @PostMapping("/{idPruu}/{idPombo}")
     public Optional<Pruu> darLike(@PathVariable String idPruu, String idPombo) throws PomboException {
-        return pruuService.likeOrDislike(idPruu, idPombo);
+        return pruuService.likeOuDisLike(idPruu, idPombo);
     }
 
 

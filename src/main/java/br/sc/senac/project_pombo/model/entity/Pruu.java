@@ -28,6 +28,7 @@ public class Pruu {
     @JoinColumn(name = "id_pombo")
     private Pombo pombo;
 
+
     @NotNull
     @NotBlank(message = "Não pode ultrapassar o limite de 300 caracteres.")
     @Size(min = 1, max = 300)
@@ -36,8 +37,11 @@ public class Pruu {
     @CreationTimestamp
     private LocalDate dataCriada;
 
-    @ManyToMany(mappedBy = "listaDeMilhos")
-    private Set<Pombo> milhos;
+    @ManyToMany
+    @JoinTable(name = "tb_milho",
+            joinColumns = @JoinColumn(name = "pruu_id"),
+            inverseJoinColumns = @JoinColumn(name = "pombo_id"))
+    private List<Pombo> listaDeMilhos;
 
     private Integer totalDeMilhos;
 

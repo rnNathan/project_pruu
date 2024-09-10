@@ -43,11 +43,6 @@ public class Pombo {
     private Set<Pruu> mensagens;
 
 
-    @ManyToMany
-    @JoinTable(name = "tb_milho",
-            joinColumns = @JoinColumn(name = "pombo_id"),
-            inverseJoinColumns = @JoinColumn(name = "pruu_id"))
-    private List<Pruu> listaDeMilhos;
 
 
 }
