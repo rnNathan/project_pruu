@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pruu")
@@ -53,6 +54,12 @@ public class PruuController {
     @PostMapping("/filtro")
     public List<Pruu> pesquisarComSeletor(@RequestBody PruuSeletor seletor) {
         return pruuService.listarComSeletor(seletor);
+    }
+
+
+    @PostMapping("/{idPruu}/{idPombo}")
+    public Optional<Pruu> darLike(@PathVariable String idPruu, String idPombo) throws PomboException {
+        return pruuService.likeOrDislike(idPruu, idPombo);
     }
 
 

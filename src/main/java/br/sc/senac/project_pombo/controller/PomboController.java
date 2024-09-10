@@ -22,7 +22,7 @@ public class PomboController {
         return ResponseEntity.ok(service.inserir(pombo));
     }
 
-    @PutMapping
+    @PutMapping()
     public ResponseEntity<Pombo> atualizar(@Valid @RequestBody Pombo pombo) {
         return ResponseEntity.ok(service.atualizar(pombo));
     }
