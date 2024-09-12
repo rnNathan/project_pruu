@@ -2,6 +2,7 @@ package br.sc.senac.project_pombo.service;
 
 
 import br.sc.senac.project_pombo.exception.PomboException;
+import br.sc.senac.project_pombo.model.entity.PerfilAcesso;
 import br.sc.senac.project_pombo.model.entity.Pombo;
 import br.sc.senac.project_pombo.model.entity.Pruu;
 import br.sc.senac.project_pombo.model.repository.PomboRepository;
@@ -12,8 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class PruuService {
@@ -55,40 +54,47 @@ public class PruuService {
         return pruuRepository.findAll(seletor);
     }
 
-//    public List<Pruu> curtidas(String idUsuario) {
-//        Set<List>
-//
-//
-//        return null;
-//    }
+    public void curtidas(String idPombo, String idPruu) {
+        Pruu pruu = pruuRepository.findById(idPombo).get();
+        Pombo pombo = pomboRepository.findById(idPruu).get();
+        List <Pombo> milhos = pruu.getMilhos();
 
-    public Optional<Pruu> likeOuDisLike(String idPruu, String idUsuario) throws PomboException {
-        //Pegar o Pruu pelo id dele.
-        Optional<Pruu> pruuMensagem = pruuRepository.findById(idPruu);
-
-        Pruu pruu;
-        Pombo pombo = null;
-
-        if (pruuMensagem.isPresent()) {  //isPresent vê se encontrou algum valor, se encontrar irei poder mexer,caso ao contrário, ele envia uma mensagem de não encontrada.
-            pruu = pruuMensagem.get();
-            Set<Pombo> pombosQueCurtiram = pruu.getMilhos();
-
-            if (pombosQueCurtiram.contains(idUsuario)) {  //Caso o pombo deu deslike, ele vai retirar da lista.
-                pombosQueCurtiram.remove(idUsuario);
-                pruu.setTotalDeMilhos(pruu.getTotalDeMilhos() - 1);
-            } else {
-                pombosQueCurtiram.add(pombo);
-                pruu.setMilhos(pombosQueCurtiram);
-                pruu.setTotalDeMilhos(pruu.getTotalDeMilhos() + 1);
-            }
-            //Atualizar os pruu
-
-            pruuRepository.save(pruu);
+        if (milhos.contains(pombo)) {
+            milhos.remove(pombo);
+            pruu.setTotalDeMilhos(pruu.getTotalDeMilhos() - 1);
         } else {
-            throw new PomboException("Mensagem não encontrada!");
+            milhos.add(pombo);
+            pruu.setTotalDeMilhos(pruu.getTotalDeMilhos() + 1);
         }
-
-        return pruuRepository.findById(idPruu);
+        pruu.setMilhos(milhos);
+        pruuRepository.save(pruu);
     }
 
+    public boolean bloquear(String idPombo, String idPruu) throws PomboException {
+        this.verificarSeEhAdmin(idPombo);
+        Pruu pruu = pruuRepository.findById(idPombo).get();
+        Pombo pombo = pomboRepository.findById(idPruu).get();
+        boolean sucesso = false;
+
+        if (pruu.getId() == null) {
+            throw new PomboException("Mensagem não encontrada");
+        } else if (pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
+            throw new PomboException("Não pode bloquear pois não é administrador, usuários pode apenas denunciar.");
+        } else if (pruu.getBloqueado() == false){
+           pruu.setBloqueado(true);
+           sucesso = true;
+        }
+
+        return sucesso;
+
+    }
+
+    private void verificarSeEhAdmin(String idPombo) throws PomboException {
+        Pombo pombo = pomboRepository.findById(idPombo).get();
+        if (pombo.getId() == null) {
+            throw new PomboException("Pombo não encontrado");
+        }else if(pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
+            throw new PomboException("Pombo não é administrador");
+        }
+    }
 }

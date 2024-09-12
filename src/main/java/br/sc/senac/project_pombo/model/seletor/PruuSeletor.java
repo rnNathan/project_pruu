@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static br.sc.senac.project_pombo.model.seletor.BaseSeletor.filtroPerido;
+import static br.sc.senac.project_pombo.model.seletor.BaseSeletor.filtroPeriodo;
 
 @Data
 public class PruuSeletor extends BaseSeletor implements Specification<Pruu> {
@@ -23,6 +23,9 @@ public class PruuSeletor extends BaseSeletor implements Specification<Pruu> {
     //Period filter
     private LocalDate dataInicioPostagem;
     private LocalDate dataFimPostagem;
+
+    private Integer quantidadeMinima;
+    private Integer quantidadeMaxima;
 
     public boolean temFiltro(){
         return (this.mensagem != null && this.mensagem.trim().length() > 0)
@@ -38,9 +41,8 @@ public class PruuSeletor extends BaseSeletor implements Specification<Pruu> {
                 predicates.add(cb.like(root.get("mensagem"), "%" + this.getMensagem() + "%"));
 
             }
-
-            filtroPerido(root,cb, predicates,this.dataInicioPostagem, this.dataFimPostagem, "dataCriada");
-
+            filtroPeriodo(root, cb, predicates,this.dataInicioPostagem, this.dataFimPostagem, "dataCriada");
+            filtroPorMilhos(root, cb, predicates, this.quantidadeMinima, this.quantidadeMaxima, "totalDeMilhos");
             return cb.and(predicates.toArray(new Predicate[0]));
     }
 }

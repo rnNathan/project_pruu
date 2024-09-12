@@ -8,6 +8,7 @@ import br.sc.senac.project_pombo.model.seletor.PruuSeletor;
 import br.sc.senac.project_pombo.service.PruuService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,15 +53,19 @@ public class PruuController {
     @Operation(summary = "Pesquisar cartas com filtros",
             description = "Retorna uma lista de cartas que atendem aos critérios especificados no seletor.")
     @PostMapping("/filtro")
-    public List<Pruu> pesquisarComSeletor(@RequestBody PruuSeletor seletor) {
-        return pruuService.listarComSeletor(seletor);
+    public ResponseEntity<List<Pruu>> pesquisarComSeletor(@RequestBody PruuSeletor seletor) {
+        return ResponseEntity.ok(pruuService.listarComSeletor(seletor));
     }
-
 
     @PostMapping("/{idPruu}/{idPombo}")
-    public Optional<Pruu> darLike(@PathVariable String idPruu, String idPombo) throws PomboException {
-        return pruuService.likeOuDisLike(idPruu, idPombo);
+    public ResponseEntity<Void> darMilhos(@PathVariable String idPruu, String idPombo){
+        pruuService.curtidas(idPombo, idPruu);
+        return ResponseEntity.ok().build();
+
     }
+
+//    @PatchMapping
+//    public ResponseEntity<>
 
 
 

@@ -40,7 +40,7 @@ public class Pombo {
 
     @JsonBackReference
     @OneToMany(mappedBy = "pombo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Pruu> mensagens;
+    private Set<Pruu> mensagens; // lista de mensagens.
 
 
 

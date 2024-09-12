@@ -41,8 +41,10 @@ public class Pruu {
     @JoinTable(name = "tb_milho",
             joinColumns = @JoinColumn(name = "pruu_id"),
             inverseJoinColumns = @JoinColumn(name = "pombo_id"))
-    private List<Pombo> listaDeMilhos;
+    private List<Pombo> milhos; //Usuários que deram curtida.
 
-    private Integer totalDeMilhos;
+    private Integer totalDeMilhos; //total de curtidas na mensagem.
+
+    private Boolean bloqueado; //Mensagem bloqueada
 
 }

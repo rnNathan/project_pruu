@@ -25,13 +25,24 @@ public abstract class BaseSeletor {
         return this.limite > 0 && this.pagina > 0;
     }
 
-    static void filtroPerido(Root<Pruu> root, CriteriaBuilder cb, List<Predicate> predicates, LocalDate dataInicioPostagem, LocalDate dataFimPostagem, String nomeAtributo) {
+    //Filtro por data.
+    static void filtroPeriodo(Root<Pruu> root, CriteriaBuilder cb, List<Predicate> predicates, LocalDate dataInicioPostagem, LocalDate dataFimPostagem, String nomeAtributo) {
         if (dataInicioPostagem != null && dataFimPostagem != null) {
             predicates.add(cb.between(root.get(nomeAtributo), dataInicioPostagem, dataFimPostagem));
         } else if (dataInicioPostagem != null) {
             predicates.add(cb.greaterThanOrEqualTo(root.get(nomeAtributo), dataInicioPostagem));
         } else if (dataFimPostagem != null) {
             predicates.add(cb.greaterThanOrEqualTo(root.get(nomeAtributo), dataFimPostagem));
+        }
+    }
+    //Filtro para buscar por quantidade de curtidas.
+    static void filtroPorMilhos (Root<Pruu> root, CriteriaBuilder cb, List<Predicate> predicates, Integer valorInicial, Integer valorFinal, String nomeAtributo) {
+        if (valorInicial != null && valorFinal != null) {
+            predicates.add(cb.between(root.get(nomeAtributo), valorInicial, valorFinal));
+        } else if (valorInicial != null) {
+            predicates.add(cb.greaterThanOrEqualTo(root.get(nomeAtributo), valorInicial));
+        } else if (valorFinal != null) {
+            predicates.add(cb.greaterThanOrEqualTo(root.get(nomeAtributo), valorFinal));
         }
     }
 
