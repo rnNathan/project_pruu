@@ -3,6 +3,7 @@ package br.sc.senac.project_pombo.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.br.CPF;
@@ -40,9 +41,6 @@ public class Pombo {
 
     @JsonBackReference
     @OneToMany(mappedBy = "pombo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Pruu> mensagens; // lista de mensagens.
-
-
-
+    private List<Pruu> mensagens; // lista de mensagens.
 
 }

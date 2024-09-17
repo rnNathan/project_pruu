@@ -2,6 +2,7 @@ package br.sc.senac.project_pombo.service;
 
 
 import br.sc.senac.project_pombo.exception.PomboException;
+import br.sc.senac.project_pombo.model.dto.PruuDTO;
 import br.sc.senac.project_pombo.model.entity.PerfilAcesso;
 import br.sc.senac.project_pombo.model.entity.Pombo;
 import br.sc.senac.project_pombo.model.entity.Pruu;
@@ -22,7 +23,14 @@ public class PruuService {
     @Autowired
     private PomboRepository pomboRepository;
 
-    public Pruu inserir(Pruu pruu) {
+    public Pruu inserir(PruuDTO pruuDTO) throws PomboException {
+        Pombo pombo = pomboRepository.findById(pruuDTO.getIdPombo()).orElseThrow(() -> new PomboException("Pombo não encontrado."));
+
+        Pruu pruu = new Pruu();
+
+        pruu.setPombo(pombo);
+        pruu.setMensagem(pruuDTO.getMensagem());
+
         return pruuRepository.save(pruu);
     }
 
@@ -54,9 +62,10 @@ public class PruuService {
         return pruuRepository.findAll(seletor);
     }
 
-    public void curtidas(String idPombo, String idPruu) throws PomboException {
+    public void curtidas(String idPruu, String idPombo) throws PomboException {
         Pruu pruu = pruuRepository.findById(idPruu).orElseThrow(() -> new PomboException("Pruu não encontrado."));
         Pombo pombo = pomboRepository.findById(idPombo).orElseThrow(() -> new PomboException("Pombo não encontrado."));
+
         List<Pombo> milhos = pruu.getMilhos();
 
         if (milhos.contains(pombo)) {
@@ -89,12 +98,11 @@ public class PruuService {
 
     }
 
-    private void verificarSeEhAdmin(String idPombo) throws PomboException {
-        Pombo pombo = pomboRepository.findById(idPombo).get();
-        if (pombo.getId() == null) {
-            throw new PomboException("Pombo não encontrado");
-        } else if (pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
-            throw new PomboException("Pombo não é administrador");
+    private void verificarSeEhAdmin(String pombinho) throws PomboException {
+        Pombo pombo = pomboRepository.findById(pombinho).orElseThrow(() -> new PomboException("Usuário não encontrado."));
+
+        if(pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
+            throw new PomboException("Usuário não autorizado.");
         }
     }
 }

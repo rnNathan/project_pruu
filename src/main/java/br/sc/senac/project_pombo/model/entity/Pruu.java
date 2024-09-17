@@ -1,6 +1,7 @@
 package br.sc.senac.project_pombo.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,14 +38,15 @@ public class Pruu {
     @CreationTimestamp
     private LocalDate dataCriada;
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(name = "tb_milho",
             joinColumns = @JoinColumn(name = "pruu_id"),
             inverseJoinColumns = @JoinColumn(name = "pombo_id"))
     private List<Pombo> milhos; //Usuários que deram curtida.
 
-    private Integer totalDeMilhos; //total de curtidas na mensagem.
+    private Integer totalDeMilhos = 0; //total de curtidas na mensagem.
 
-    private Boolean bloqueado; //Mensagem bloqueada
+    private Boolean bloqueado = false; //Mensagem bloqueada
 
 }

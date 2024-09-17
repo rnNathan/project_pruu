@@ -2,6 +2,7 @@ package br.sc.senac.project_pombo.controller;
 
 
 import br.sc.senac.project_pombo.exception.PomboException;
+import br.sc.senac.project_pombo.model.dto.PruuDTO;
 import br.sc.senac.project_pombo.model.entity.Pombo;
 import br.sc.senac.project_pombo.model.entity.Pruu;
 import br.sc.senac.project_pombo.model.seletor.PruuSeletor;
@@ -24,7 +25,7 @@ public class PruuController {
     private PruuService pruuService;
 
     @PostMapping
-    public ResponseEntity<Pruu> inserir(@Valid @RequestBody Pruu novoPruu) {
+    public ResponseEntity<Pruu> inserir(@Valid @RequestBody PruuDTO novoPruu) throws PomboException {
         return ResponseEntity.ok(pruuService.inserir(novoPruu));
     }
 
@@ -57,15 +58,19 @@ public class PruuController {
         return ResponseEntity.ok(pruuService.listarComSeletor(seletor));
     }
 
+    @Operation(summary = "Dar milhos ao pruu.",
+            description = "Retorna um http 200.")
     @PostMapping("/{idPruu}/{idPombo}")
     public ResponseEntity<Void> darMilhos(@RequestBody @PathVariable String idPruu, String idPombo) throws PomboException {
-        pruuService.curtidas(idPombo, idPruu);
+        pruuService.curtidas(idPruu, idPombo);
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{idPombo}/{idPruu}")
-    public ResponseEntity<Boolean> bloquear(@PathVariable String idPombo, String idPruu) throws PomboException {
-          return ResponseEntity.ok(pruuService.bloquear(idPombo, idPruu));
+    @Operation(summary = "Bloquear o pruu.",
+            description = "Retornar um boolean se está bloqueado.")
+    @PatchMapping("/{idPruu}/{idPombo}")
+    public ResponseEntity<Boolean> bloquear(@PathVariable String idPruu, String idPombo) throws PomboException {
+          return ResponseEntity.ok(pruuService.bloquear(idPruu, idPombo));
     }
 
 

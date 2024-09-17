@@ -2,9 +2,9 @@ package br.sc.senac.project_pombo.controller;
 
 
 import br.sc.senac.project_pombo.exception.PomboException;
+import br.sc.senac.project_pombo.model.dto.DenunciaDTO;
 import br.sc.senac.project_pombo.model.entity.Denuncia;
 import br.sc.senac.project_pombo.service.DenunciaService;
-import br.sc.senac.project_pombo.service.PruuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +18,17 @@ public class DenunciaController {
     @Autowired
     private DenunciaService denunciaService;
 
-    @PostMapping
-    public ResponseEntity<Denuncia> cadastrarDenuncia(Denuncia cadastrarDenuncia) {
-        return ResponseEntity.ok(denunciaService .inserir(cadastrarDenuncia));
+    @PostMapping("/realizar")
+    public ResponseEntity<Denuncia> cadastrarDenuncia(@RequestBody DenunciaDTO denunciaDto) throws PomboException {
+        return ResponseEntity.ok(denunciaService.criarDenuncia(denunciaDto));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Denuncia>> listarTodasAsDenuncias() throws PomboException {
-        return ResponseEntity.ok(denunciaService.listarTodasDenuncias());
+    @GetMapping("/listarDenuncia/{id}")
+    public ResponseEntity<List<Denuncia>> listarTodasAsDenuncias(String id) throws PomboException {
+        return ResponseEntity.ok(denunciaService.listarTodasDenuncias(id));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{idDenuncia}")
     public ResponseEntity<Denuncia> consultarDenunciaPorId(@PathVariable String idDenuncia) throws PomboException {
          return ResponseEntity.ok(denunciaService.consultarDenunciaPorId(idDenuncia));
     }
