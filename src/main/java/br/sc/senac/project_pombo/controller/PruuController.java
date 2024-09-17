@@ -58,14 +58,18 @@ public class PruuController {
     }
 
     @PostMapping("/{idPruu}/{idPombo}")
-    public ResponseEntity<Void> darMilhos(@PathVariable String idPruu, String idPombo){
+    public ResponseEntity<Void> darMilhos(@RequestBody @PathVariable String idPruu, String idPombo) throws PomboException {
         pruuService.curtidas(idPombo, idPruu);
         return ResponseEntity.ok().build();
-
     }
 
-//    @PatchMapping
-//    public ResponseEntity<>
+    @PatchMapping("/{idPombo}/{idPruu}")
+    public ResponseEntity<Boolean> bloquear(@PathVariable String idPombo, String idPruu) throws PomboException {
+          return ResponseEntity.ok(pruuService.bloquear(idPombo, idPruu));
+    }
+
+
+
 
 
 

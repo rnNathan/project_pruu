@@ -27,8 +27,9 @@ public class DenunciaService {
         return denunciaRepository.save(denuncia);
     }
 
-    public List<Denuncia> listarTodasDenuncias(String ehAdmin) throws PomboException {
-        this.verificarSeEhAdmin(ehAdmin);
+    public List<Denuncia> listarTodasDenuncias() throws PomboException {
+        Pombo pombo = new Pombo();
+        this.verificarSeEhAdmin(pombo.getId());
         return denunciaRepository.findAll();
     }
 
@@ -38,11 +39,10 @@ public class DenunciaService {
     }
 
     private void verificarSeEhAdmin(String idPombo) throws PomboException {
-        Pombo pombo = pomboRepository.findById(idPombo).get();
-        if (pombo.getId() == null) {
-            throw new PomboException("Pombo não encontrado");
-        }else if(pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
-            throw new PomboException("Pombo não é administrador");
+        Pombo pombo = pomboRepository.findById(idPombo).orElseThrow(() -> new PomboException("Usuário não encontrado."));
+
+        if(pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
+            throw new PomboException("Usuário não autorizado.");
         }
     }
 }

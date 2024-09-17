@@ -54,10 +54,10 @@ public class PruuService {
         return pruuRepository.findAll(seletor);
     }
 
-    public void curtidas(String idPombo, String idPruu) {
-        Pruu pruu = pruuRepository.findById(idPombo).get();
-        Pombo pombo = pomboRepository.findById(idPruu).get();
-        List <Pombo> milhos = pruu.getMilhos();
+    public void curtidas(String idPombo, String idPruu) throws PomboException {
+        Pruu pruu = pruuRepository.findById(idPruu).orElseThrow(() -> new PomboException("Pruu não encontrado."));
+        Pombo pombo = pomboRepository.findById(idPombo).orElseThrow(() -> new PomboException("Pombo não encontrado."));
+        List<Pombo> milhos = pruu.getMilhos();
 
         if (milhos.contains(pombo)) {
             milhos.remove(pombo);
@@ -71,18 +71,18 @@ public class PruuService {
     }
 
     public boolean bloquear(String idPombo, String idPruu) throws PomboException {
-        this.verificarSeEhAdmin(idPombo);
-        Pruu pruu = pruuRepository.findById(idPombo).get();
-        Pombo pombo = pomboRepository.findById(idPruu).get();
-        boolean sucesso = false;
+        this.verificarSeEhAdmin(idPombo); // Verifica se existe um usuário.
+        Pruu pruu = pruuRepository.findById(idPombo).get(); //pegando a mensagem.
+        Pombo pombo = pomboRepository.findById(idPruu).get(); // pegando o usuário.
+        boolean sucesso = false; //retorno
 
-        if (pruu.getId() == null) {
+        if (pruu.getId() == null) { //
             throw new PomboException("Mensagem não encontrada");
-        } else if (pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
+        } else if (pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) { //verificando perfil de acesso.
             throw new PomboException("Não pode bloquear pois não é administrador, usuários pode apenas denunciar.");
-        } else if (pruu.getBloqueado() == false){
-           pruu.setBloqueado(true);
-           sucesso = true;
+        } else if (pruu.getBloqueado() == false) { //Caso a mensagem esteja em false, transforme em true.
+            pruu.setBloqueado(true); //setando manualmente.
+            sucesso = true;
         }
 
         return sucesso;
@@ -93,7 +93,7 @@ public class PruuService {
         Pombo pombo = pomboRepository.findById(idPombo).get();
         if (pombo.getId() == null) {
             throw new PomboException("Pombo não encontrado");
-        }else if(pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
+        } else if (pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) {
             throw new PomboException("Pombo não é administrador");
         }
     }

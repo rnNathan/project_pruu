@@ -30,7 +30,9 @@ public class PruuSeletor extends BaseSeletor implements Specification<Pruu> {
     public boolean temFiltro(){
         return (this.mensagem != null && this.mensagem.trim().length() > 0)
                 || (this.dataInicioPostagem != null)
-                || (this.dataFimPostagem != null);
+                || (this.dataFimPostagem != null)
+                || (this.quantidadeMinima != null)
+                || (this.quantidadeMaxima != null);
 
     }
     @Override
