@@ -81,7 +81,7 @@ public class PruuService {
 
     public boolean bloquear(String idPombo, String idPruu) throws PomboException {
         this.verificarSeEhAdmin(idPombo); // Verifica se existe um usuário.
-        Pruu pruu = pruuRepository.findById(idPombo).get(); //pegando a mensagem.
+        Pruu pruu = pruuRepository.findById(idPombo).get(); //pegando a pruu.
         Pombo pombo = pomboRepository.findById(idPruu).get(); // pegando o usuário.
         boolean sucesso = false; //retorno
 
@@ -89,15 +89,12 @@ public class PruuService {
             throw new PomboException("Mensagem não encontrada");
         } else if (pombo.getPerfilAcesso() == PerfilAcesso.USUARIO) { //verificando perfil de acesso.
             throw new PomboException("Não pode bloquear pois não é administrador, usuários pode apenas denunciar.");
-        } else if (pruu.getBloqueado() == false) { //Caso a mensagem esteja em false, transforme em true.
+        } else if (pruu.getBloqueado() == false) { //Caso a pruu esteja em false, transforme em true.
             pruu.setBloqueado(true); //setando manualmente.
             sucesso = true;
         }
-
         return sucesso;
-
     }
-
     private void verificarSeEhAdmin(String pombinho) throws PomboException {
         Pombo pombo = pomboRepository.findById(pombinho).orElseThrow(() -> new PomboException("Usuário não encontrado."));
 

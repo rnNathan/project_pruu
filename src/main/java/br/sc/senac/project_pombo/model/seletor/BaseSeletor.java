@@ -35,8 +35,9 @@ public abstract class BaseSeletor {
             predicates.add(cb.greaterThanOrEqualTo(root.get(nomeAtributo), dataFimPostagem));
         }
     }
+
     //Filtro para buscar por quantidade de curtidas.
-    static void filtroPorMilhos (Root<Pruu> root, CriteriaBuilder cb, List<Predicate> predicates, Integer valorInicial, Integer valorFinal, String nomeAtributo) {
+    static void filtroPorMilhos(Root<Pruu> root, CriteriaBuilder cb, List<Predicate> predicates, Integer valorInicial, Integer valorFinal, String nomeAtributo) {
         if (valorInicial != null && valorFinal != null) {
             predicates.add(cb.between(root.get(nomeAtributo), valorInicial, valorFinal));
         } else if (valorInicial != null) {

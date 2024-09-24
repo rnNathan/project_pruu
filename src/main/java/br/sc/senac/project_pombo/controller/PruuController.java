@@ -44,15 +44,15 @@ public class PruuController {
         return ResponseEntity.ok(pruuService.buscarPorId(id));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable String id) {
-        pruuService.excluir(id);
-        return ResponseEntity.noContent().build();
+//    @DeleteMapping("/{idPombo}")
+//    public ResponseEntity<Void> excluir(@PathVariable String idPombo) {
+//        pruuService.excluir(idPombo);
+//        return ResponseEntity.noContent().build();
+//
+//    }
 
-    }
-
-    @Operation(summary = "Pesquisar cartas com filtros",
-            description = "Retorna uma lista de cartas que atendem aos critérios especificados no seletor.")
+    @Operation(summary = "Filtrar Pruu.",
+            description = "Retorna uma lista de Pruu que atendem aos critérios especificados no seletor.")
     @PostMapping("/filtro")
     public ResponseEntity<List<Pruu>> pesquisarComSeletor(@RequestBody PruuSeletor seletor) {
         return ResponseEntity.ok(pruuService.listarComSeletor(seletor));

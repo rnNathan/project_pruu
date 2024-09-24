@@ -2,7 +2,11 @@ package br.sc.senac.project_pombo.controller;
 
 import br.sc.senac.project_pombo.exception.PomboException;
 import br.sc.senac.project_pombo.model.entity.Pombo;
+import br.sc.senac.project_pombo.model.entity.Pruu;
+import br.sc.senac.project_pombo.model.seletor.PomboSeletor;
+import br.sc.senac.project_pombo.model.seletor.PruuSeletor;
 import br.sc.senac.project_pombo.service.PomboService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +20,11 @@ public class PomboController {
 
     @Autowired
     private PomboService service;
+    @Autowired
+    private PomboService pomboService;
 
     @PostMapping
-    public ResponseEntity<Pombo> inserir(@Valid @RequestBody Pombo pombo) {
+    public ResponseEntity<Pombo> inserir(@Valid @RequestBody Pombo pombo) throws PomboException {
         return ResponseEntity.ok(service.inserir(pombo));
     }
 
@@ -38,9 +44,16 @@ public class PomboController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable String id) {
+    public ResponseEntity<Void> excluir(@PathVariable String id) throws PomboException {
         service.excluir(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Listar por filtro.",
+            description = "Retorna uma lista de Pombo que atendem aos critérios especificados no seletor.")
+    @PostMapping("/filtro")
+    public ResponseEntity<List<Pombo>> pesquisarComSeletor(@RequestBody PomboSeletor seletor) {
+        return ResponseEntity.ok(pomboService.listarComSeletor(seletor));
     }
 
 

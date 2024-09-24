@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 
-@Table (name = "TB_PRUU")
+@Table(name = "TB_PRUU")
 @Entity
 @Data
 public class Pruu {
@@ -45,7 +45,7 @@ public class Pruu {
             inverseJoinColumns = @JoinColumn(name = "pombo_id"))
     private List<Pombo> milhos; //Usuários que deram curtida.
 
-    private Integer totalDeMilhos = 0; //total de curtidas na mensagem.
+    private Integer totalDeMilhos = 0; //total de curtidas na pruu.
 
     private Boolean bloqueado = false; //Mensagem bloqueada
 
